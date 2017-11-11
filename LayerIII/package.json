@@ -1,0 +1,24 @@
+{
+  "name": "dataprovisionapi",
+  "version": "1.0.0",
+  "description": "Rest API to provide data coming from IoT devices",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yemramirezca/my_first_IoT_Platform.git"
+  },
+  "keywords": [
+    "API",
+    "RESTful",
+    "IoT"
+  ],
+  "author": "Yesika Ramirez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yemramirezca/my_first_IoT_Platform/issues"
+  },
+  "homepage": "https://github.com/yemramirezca/my_first_IoT_Platform#readme"
+}
