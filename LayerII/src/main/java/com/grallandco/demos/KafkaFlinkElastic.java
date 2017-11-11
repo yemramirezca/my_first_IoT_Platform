@@ -57,10 +57,9 @@ public class KafkaFlinkElastic {
 
             ElasticsearchSinkFunction<String> indexLog = new ElasticsearchSinkFunction<String>() {
                 public IndexRequest createIndexRequest(String element) {
-                    String[] logContent = element.trim().split("\t");
+                    String logContent = element.trim();
                     Map<String, String> esJson = new HashMap<>();
-                    esJson.put("IP", logContent[0]);
-                    esJson.put("info", logContent[1]);
+                    esJson.put("Temp", logContent);
 
                     return Requests
                             .indexRequest()
