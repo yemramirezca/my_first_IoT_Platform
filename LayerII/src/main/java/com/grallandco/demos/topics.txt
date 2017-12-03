@@ -1,0 +1,2 @@
+temperature_machine1
+temperature_machine2

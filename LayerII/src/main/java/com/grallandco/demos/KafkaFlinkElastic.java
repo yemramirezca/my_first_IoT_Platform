@@ -13,7 +13,12 @@ import org.elasticsearch.client.Requests;
 
 import java.net.InetSocketAddress;
 import java.util.*;
-
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 
 /**
  * @author Keira Zhou
@@ -24,10 +29,13 @@ public class KafkaFlinkElastic {
     public static void main(String[] args) throws Exception {
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         DataStream<String> stream = readFromKafka(env);
-        stream.print();
-        writeToElastic(stream);
-        // execute program
-        env.execute("flink-demo!");
+        if (stream != null)
+	{
+	  stream.print();
+       	   writeToElastic(stream);
+          // execute program
+          env.execute("flink-demo!");
+	}
     }
 
     public static DataStream<String> readFromKafka(StreamExecutionEnvironment env) {
@@ -36,9 +44,20 @@ public class KafkaFlinkElastic {
         Properties properties = new Properties();
         properties.setProperty("bootstrap.servers", "localhost:9092");
         properties.setProperty("group.id", "flink-demo");
+	
+	DataStream<String> stream = null;
+	try {	
+		Path file_path = Paths.get("/root/my_first_IoT_Platform/LayerII/src/main/java/com/grallandco/demos", "topics.txt");
+		Charset charset = Charset.forName("ISO-8859-1");
+		List<String> lines = Files.readAllLines(file_path, charset);
+		System.out.println("**************************" + lines.size());	
+	
 
-        DataStream<String> stream = env.addSource(
-                new FlinkKafkaConsumer09<>("flink-demo", new SimpleStringSchema(), properties));
+         stream = env.addSource(
+                new FlinkKafkaConsumer09<>(lines, new SimpleStringSchema(), properties));
+	} catch(IOException e){
+	 e.printStackTrace();
+	}
         return stream;
     }
 
@@ -63,7 +82,7 @@ public class KafkaFlinkElastic {
 
                     return Requests
                             .indexRequest()
-                            .index("viper-test")
+                            .index("viper-test2")
                             .type("viper-log")
                             .source(esJson);
                 }
